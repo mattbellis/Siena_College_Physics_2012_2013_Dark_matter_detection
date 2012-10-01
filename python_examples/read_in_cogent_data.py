@@ -15,7 +15,7 @@ first_event = 2750361.2
 
 # We need to give the full path to the directory. This will obviously be 
 # different on your machine, so you will want to edit this by hand. 
-infile_name = '/home/bellis/matts-work-environment/python/CoGeNT/data/high_gain.txt'
+infile_name = '/Users/lm27apic/Documents/high_gain.txt'
 tdays,energies = cu.get_cogent_data(infile_name,first_event=first_event,calibration=0)
 
 print "\nNumber of entries in the data arrays"
