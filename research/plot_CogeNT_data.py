@@ -2,6 +2,8 @@ import numpy as np
 import cogent_utilities as cu
 import matplotlib.pylab as plt
 
+import lichen.lichen as lch
+
 # This is the ``time" of the first event, in some digitial units used
 # by the detector
 first_event = 2750361.2
@@ -24,15 +26,16 @@ index = index0*index1
 x = energies[index]
 
 # This will find the mean, sum, and stddev of an array z of some peak
-index2 = energies>0.106
-index3 = energies<0.116
+index2 = energies>0.097
+index3 = energies<0.104
 index4 = index2*index3
 print index4
 z = energies[index4]
 t = tdays[index4]
 # plotting the peak
 plt.figure()
-plt.hist(z)
+#plt.hist(z)
+lch.hist_err(z)
 # plotting the time for the peak
 plt.figure()
 plt.hist(t,bins=20)
@@ -54,7 +57,8 @@ plt.figure()
 # Note that we can set the number of bins (bins) and the x-axis range
 # (range) in the constructor.
 # plt.hist(energies,bins=100,range=(8,11))
-events = plt.hist(x,bins=300,range=(0,0.2))
+# events = plt.hist(x,bins=300,range=(0,0.2))
+lch.hist_err(x,bins=300,range=(0,0.2))
 plt.xlabel('Amplitude')
 plt.ylabel('Number of Events')
 #plt.savefig('image~cal999_b200.png')
