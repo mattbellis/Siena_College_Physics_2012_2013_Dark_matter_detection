@@ -1,7 +1,6 @@
 import numpy as np
 import cogent_utilities as cu
 import matplotlib.pylab as plt
-
 import lichen.lichen as lch
 
 # This is the ``time" of the first event, in some digitial units used
@@ -10,9 +9,10 @@ first_event = 2750361.2
 
 # We need to give the full path to the directory. This will obviously be 
 # different on your machine, so you will want to edit this by hand. 
-#infile_name = '/Users/lm27apic/Documents/Fall_2012/Dark_Matter_Research/dark_matter_data/low_gain.txt'
-infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
+infile_name = '/Users/lm27apic/Documents/Fall_2012/Dark_Matter_Research/dark_matter_data/low_gain.txt'
+#infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
 #infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/high_gain.txt'
+
 tdays,energies = cu.get_cogent_data(infile_name,first_event=first_event,calibration=999)
 
 index0 = energies>0
@@ -40,11 +40,10 @@ lch.hist_err(z)
 plt.figure()
 plt.hist(t,bins=20)
 
-background = 20*len(z)
+# background = 20*len(z)
 mean = np.mean(z)
 stdev = np.std(z)
 summ = len(z)
-#summ = np.sum(z) - background
 
 print np.sum(z)
 print mean
@@ -58,7 +57,7 @@ plt.figure()
 # (range) in the constructor.
 # plt.hist(energies,bins=100,range=(8,11))
 # events = plt.hist(x,bins=300,range=(0,0.2))
-lch.hist_err(x,bins=300,range=(0,0.2))
+ch.hist_err(x,bins=300,range=(0,0.2))
 plt.xlabel('Amplitude')
 plt.ylabel('Number of Events')
 #plt.savefig('image~cal999_b200.png')
