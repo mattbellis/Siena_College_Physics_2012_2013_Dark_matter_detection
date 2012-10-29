@@ -17,4 +17,16 @@ plt.ylabel('Energy (keVee)')
 print np.polyfit(amp,energy,1)
 
 # Need to call the ``show" function to get the figure to pop up.
+# plt.show()
+
+
+
+# Here we want to find the slope of the back ground if there is one.
+
+x = [0.0328353, 0.0438772, 0.125795, 0.189068]
+y = [23.9624, 22.0425, 17.0195, 13.9846]
+
+plt.figure()
+plt.plot(x,y,'bo')
+print np.polyfit(x,y,1)
 plt.show()
