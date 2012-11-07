@@ -36,9 +36,15 @@ ax.set_xlim(0,5)
 ax.plot(x,y2,'-g')
 
 params_starting_vals = [1.0,1.0]
-params_final_vals = optimize.fmin(errfunc, params_starting_vals[:], args=(x,y,yerr))
+params_final_vals = optimize.fmin(errfunc, params_starting_vals[:], args=(x,y,yerr),full_output=True)
 
 print "Final values"
 print params_final_vals
+fit_intercept = params_final_vals[0][0]
+fit_slope = params_final_vals[0][1]
+
+print fit_intercept, fit_slope
+y3 = fit_slope*x + fit_intercept
+ax.plot(x,y3,'-r')
 
 plt.show()
