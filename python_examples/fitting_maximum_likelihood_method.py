@@ -18,14 +18,14 @@ def pdf(p, x): # Probability distribution function
     # x is the data points
     # So p[0] will be whatever you want.
     # The functional form of your hypothesis (Gaussian).
-    ret = # What goes here?
+    ret = mygauss(x,p[0],p[1])
     return ret
 
 ################################################################################
 def negative_log_likelihood(p, x, y, yerr):
     # Here you need to code up the sum of all of the negative log likelihoods (pdf)
     # for each data point.
-    ret =  # What goes here??????
+    ret = np.sum(log(pdf(p,x)))
     return ret
 
 ################################################################################
