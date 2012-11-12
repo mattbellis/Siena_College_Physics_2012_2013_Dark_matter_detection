@@ -22,10 +22,10 @@ def pdf(p,x): # Probability distribution function
     return ret
 
 ################################################################################
-def negative_log_likelihood(p,x,y):
+def negative_log_likelihood(p, x, y):
     # Here you need to code up the sum of all of the negative log likelihoods (pdf)
     # for each data point.
-    ret = np.sum(-np.log(pdf(p,x)))
+    ret = np.sum(-1*np.log(pdf(p,x)))
     return ret
 
 ################################################################################
@@ -46,7 +46,7 @@ print x
 
 # Now fit the data.
 params_starting_vals = [1.0,1.0]
-params_final_vals = optimize.fmin(negative_log_likelihood,params_starting_vals,args=(x,x),full_output=True,maxiter=100000)
+params_final_vals = optimize.fmin(negative_log_likelihood, params_starting_vals[:],args=(x,x),full_output=True)
 
 print "Final values"
 print params_final_vals
