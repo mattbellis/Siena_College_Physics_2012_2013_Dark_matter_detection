@@ -13,7 +13,7 @@ def mygauss(x,mu,sigma):
     return ret
 
 ################################################################################
-def pdf(p, x): # Probability distribution function 
+def pdf(p,x): # Probability distribution function 
     # p is an array of the parameters 
     # x is the data points
     # So p[0] will be whatever you want.
@@ -22,10 +22,10 @@ def pdf(p, x): # Probability distribution function
     return ret
 
 ################################################################################
-def negative_log_likelihood(p, x, y, yerr):
+def negative_log_likelihood(p,x,y):
     # Here you need to code up the sum of all of the negative log likelihoods (pdf)
     # for each data point.
-    ret = np.sum(log(pdf(p,x)))
+    ret = np.sum(-np.log(pdf(p,x)))
     return ret
 
 ################################################################################
@@ -46,7 +46,7 @@ print x
 
 # Now fit the data.
 params_starting_vals = [1.0,1.0]
-params_final_vals = optimize.fmin(negative_log_likelihood, params_starting_vals[:],args=(x),full_output=True)
+params_final_vals = optimize.fmin(negative_log_likelihood,params_starting_vals,args=(x,x),full_output=True,maxiter=100000)
 
 print "Final values"
 print params_final_vals
