@@ -61,8 +61,8 @@ def pdf(p,x,fixed_parameters): # Probability distribution function
     xhi = fixed_parameters[1]
     npts = fixed_parameters[2]
 
-    num_sig = p[3]
-    num_bkg = p[4]
+    num_sig = abs(p[3])
+    num_bkg = abs(p[4])
     tot_events = num_sig + num_bkg
 
     num_sig /= tot_events
@@ -75,8 +75,8 @@ def pdf(p,x,fixed_parameters): # Probability distribution function
 def negative_log_likelihood(p, x, fixed_parameters):
     # Here you need to code up the sum of all of the negative log likelihoods (pdf)
     # for each data point.
-    num_sig = p[3]
-    num_bkg = p[4]
+    num_sig = abs(p[3])
+    num_bkg = abs(p[4])
     tot_events = num_sig + num_bkg
 
     npts = fixed_parameters[2]
@@ -102,19 +102,18 @@ infile_name = '/Users/lm27apic/Documents/Fall_2012/Dark_Matter_Research/dark_mat
 
 tdays,energies = cu.get_cogent_data(infile_name,first_event=first_event,calibration=999)
 
+xlo = 0.133
+xhi = 0.1470
+mu = (xlo + xhi) / 2
+sigma = 0.0085
+slope = 0.5
 
 # Index the range of energies
-index0 = energies>0.1566
-index1 = energies<0.1690
+index0 = energies>xlo
+index1 = energies<xhi
 index = index0*index1
 
 x = energies[index]
-xlo = 0.1566
-xhi = 0.1690
-mu = 0.16305
-sigma = 0.0085
-slope = -61.55332468
-
 
 plt.figure()
 lch.hist_err(x,bins=50)
@@ -129,7 +128,8 @@ lch.hist_err(x,bins=50)
 # number of events in background
 ################################################################################
 npts = len(x)
-params_starting_vals = [4.0, 0.5, 1.0, 0.5*npts, 0.5*npts]
+print "npts: ",npts
+params_starting_vals = [mu, sigma, slope, 0.95*npts, 0.05*npts]
 fixed_parameters = [xlo,xhi,npts]
 params_final_vals = optimize.fmin(negative_log_likelihood, params_starting_vals[:],args=(x,fixed_parameters),full_output=True,maxiter=10000)
 

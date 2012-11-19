@@ -26,8 +26,8 @@ index = index0*index1
 x = energies[index]
 
 # This will find the mean, sum, and stddev of an array z of some peak
-index2 = energies>0.1566
-index3 = energies<0.1690
+index2 = energies>0.1330
+index3 = energies<0.1470
 index4 = index2*index3
 print index4
 z = energies[index4]
@@ -42,7 +42,7 @@ plt.ylabel('number of events')
 
 # plotting the time for the peak
 plt.figure()
-plt.hist(t,bins=20)
+plt.hist(t,bins=200)
 plt.xlabel('time')
 plt.ylabel('number of events')
 # print np.polyfit(,,exp(x))
