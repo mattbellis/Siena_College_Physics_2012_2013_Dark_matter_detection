@@ -59,27 +59,37 @@ def pdf(p,x,fixed_parameters): # Probability distribution function
     # fixed_parameters allows us to pass in some extra parameters for the fit.
     xlo = fixed_parameters[0]
     xhi = fixed_parameters[1]
-    npts = fixed_parameters[6]
+    npts = fixed_parameters[2]
 
-    num_sig = abs(p[7])
-    num_bkg = abs(p[8])
+    num_sig = abs(p[2]) + abs(p[5]) + abs(p[8])
+
+    num_bkg = abs(p[-1])
     tot_events = num_sig + num_bkg
+    #tot_events = num_sig 
 
-    num_sig /= tot_events
-    num_bkg /= tot_events
+    #num_sig /= tot_events
+    #num_bkg /= tot_events
 
-    ret = num_sig*mygauss(x,p[0],p[1]) + num_sig*mygauss(x,p[2],p[3]) + num_sig*mygauss(x,p[4],p[5]) + num_bkg*mylinear(x,p[6],xlo1,xhi3)
+    ret = 0
+    for i in range(0,3):
+        index = i*3
+        frac_gauss =  p[2+index]/tot_events
+        ret += frac_gauss*mygauss(x,p[0+index],p[1+index]) 
+
+    ret += (num_bkg/tot_events)*mylinear(x,p[-2],xlo,xhi)
+    
     return ret
 
 ################################################################################
 def negative_log_likelihood(p, x, fixed_parameters):
     # Here you need to code up the sum of all of the negative log likelihoods (pdf)
     # for each data point.
-    num_sig = abs(p[7])
-    num_bkg = abs(p[8])
+    num_sig = abs(p[2]) + abs(p[5]) + abs(p[8])
+    num_bkg = abs(p[-1])
     tot_events = num_sig + num_bkg
+    #tot_events = num_sig 
 
-    npts = fixed_parameters[6]
+    npts = fixed_parameters[2]
     
     # Add in a Poisson term to constrain the number of events.
     mu = tot_events
@@ -98,7 +108,9 @@ def negative_log_likelihood(p, x, fixed_parameters):
 # by the detector
 first_event = 2750361.2
 # Full path to the directory 
-infile_name = '/Users/lm27apic/Documents/Fall_2012/Dark_Matter_Research/dark_matter_data/low_gain.txt'
+#infile_name = '/Users/lm27apic/Documents/Fall_2012/Dark_Matter_Research/dark_matter_data/low_gain.txt'
+#infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
+infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/high_gain.txt'
 
 tdays,energies = cu.get_cogent_data(infile_name,first_event=first_event,calibration=999)
 
@@ -114,9 +126,9 @@ xhi3 = 0.1698
 mu1 = (xlo1 + xhi1) / 2
 mu2 = (xlo2 + xhi2) / 2
 mu3 = (xlo3 + xhi3) / 2
-sigma1 = 0.0085
-sigma2 = 0.0085
-sigma3 = 0.0085
+sigma1 = 0.002
+sigma2 = 0.002
+sigma3 = 0.002
 slope = 0.5
 
 index0 = energies>xlo1
@@ -124,7 +136,6 @@ index1 = energies<xhi3
 index = index0*index1
 
 x = energies[index]
-
 
 plt.figure()
 lch.hist_err(x,bins=50)
@@ -140,15 +151,27 @@ lch.hist_err(x,bins=50)
 npts = len(x)
 print "npts: ",npts
 
-params_starting_vals = [mu1, sigma1, mu2, sigma2, mu3, sigma3, slope, 0.95*npts, 0.05*npts]
-fixed_parameters = [xlo1,xhi1,xlo2,xhi2,xlo3,xhi3,npts]
-params_final_vals = optimize.fmin(negative_log_likelihood, params_starting_vals[:],args=(x,fixed_parameters),full_output=True,maxiter=10000)
+# Signal parameters
+sigma = [sigma1,sigma2,sigma3]
+mu = [mu1,mu2,mu3]
+nsig = [0.3*npts, 0.3*npts, 0.3*npts]
+nbkg = 0.05*npts
+
+#params_starting_vals = [mu1, sigma1, mu2, sigma2, mu3, sigma3, slope, 0.95*npts, 0.05*npts]
+params_starting_vals  = [mu[0],sigma[0],nsig[0]]
+params_starting_vals += [mu[1],sigma[1],nsig[1]]
+params_starting_vals += [mu[2],sigma[2],nsig[2]]
+params_starting_vals += [slope,nbkg]
+
+fixed_parameters = [xlo1,xhi3,npts]
+params_final_vals = optimize.fmin(negative_log_likelihood, params_starting_vals[:],args=(x,fixed_parameters),full_output=True,maxiter=1000000,maxfun=10000)
 
 print params_final_vals
 print "Final values"
-print params_final_vals[0][7]
-print params_final_vals[0][8]
-print params_final_vals[0][8] + params_final_vals[0][7]
+for i in range(0,3):
+    index = i*3
+    print params_final_vals[0][0+index],params_final_vals[0][1+index],params_final_vals[0][2+index]
+print params_final_vals[0][-2],params_final_vals[0][-1]
 
 plt.show()
 
