@@ -30,6 +30,7 @@ Xhi = [0.178,0.1690,0.1565,0.1470,0.124,0.116,0.116,0.116,0.104,0.95,0,0.080]
 H_L = [80.3,270.8,270.8,244,6.075,77.233,271.74,70.86,999,312.01,27.7025,329]
 
 # This will find the mean, sum, and stddev of an array z of some peak
+
 index2 = energies>Xlo[3]
 index3 = energies<Xhi[3]
 index4 = index2*index3
@@ -47,39 +48,44 @@ plt.ylabel('number of events')
 ##########################################
 # plotting the time for the peak
 plt.figure()
-plt.hist(t,bins=50)
+plt.hist(t,bins=1000)
 plt.xlabel('time')
 plt.ylabel('number of events')
 
-tau = H_L[3] / np.log(2)
+for hl in H_L:
+    tau = hl / np.log(2)
 
-t0 = 0
-t1 = 68
-#off
-t2 = 74
-t3 = 102
-#off
-t4 = 107
-t5 = 306
-#off
-t6 = 308
-t7 = 460
-#off
-
-f1 = np.exp(-t0/tau) - np.exp(-t1/tau)
-f2 = np.exp(-t2/tau) - np.exp(-t3/tau)
-f3 = np.exp(-t4/tau) - np.exp(-t5/tau)
-f4 = np.exp(-t6/tau) - np.exp(-t7/tau)
+    t0 = 0
+    t1 = 68
+    #off
+    t2 = 74
+    t3 = 102
+    #off
+    t4 = 107
+    t5 = 306
+    #off
+    t6 = 308
+    t7 = 460
+    #off
+    t8 = 550
+    t9 = 910
+    
+    f1 = np.exp(-t0/tau) - np.exp(-t1/tau)
+    f2 = np.exp(-t2/tau) - np.exp(-t3/tau)
+    f3 = np.exp(-t4/tau) - np.exp(-t5/tau)
+    f4 = np.exp(-t6/tau) - np.exp(-t7/tau)
+    f5 = np.exp(-t8/tau) - np.exp(-t9/tau)
 
 ##N1 = 
 ##N2 = 
 ##N3 = 
-##N4 = 
+##N4 =
+##N5 = 
 
-frac_tot = f1 + f2 + f3 + f4
-##N0 = (N1 + N2 + N3 + N4) / frac_tot
-print "Lifetime:" , tau
-print "Fraction Total:" , frac_tot
+    frac_tot = f1 + f2 + f3 + f4 + f5
+    ##N0 = (N1 + N2 + N3 + N4) / frac_tot
+    print "Lifetime:" , tau
+    print "Fraction Total:" , frac_tot
 ##print "Total Number of Atoms:" , N0
 
 ##########################################
