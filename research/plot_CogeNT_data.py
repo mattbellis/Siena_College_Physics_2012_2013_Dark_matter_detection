@@ -52,8 +52,8 @@ plt.hist(t,bins=1000)
 plt.xlabel('time')
 plt.ylabel('number of events')
 
-for hl in H_L:
-    tau = hl / np.log(2)
+for h_l in H_L:
+    tau = h_l / np.log(2)
 
     t0 = 0
     t1 = 68
@@ -76,17 +76,17 @@ for hl in H_L:
     f4 = np.exp(-t6/tau) - np.exp(-t7/tau)
     f5 = np.exp(-t8/tau) - np.exp(-t9/tau)
 
-##N1 = 
-##N2 = 
-##N3 = 
-##N4 =
-##N5 = 
+    ##N1 = 
+    ##N2 = 
+    ##N3 = 
+    ##N4 =
+    ##N5 = 
 
     frac_tot = f1 + f2 + f3 + f4 + f5
     ##N0 = (N1 + N2 + N3 + N4) / frac_tot
     print "Lifetime:" , tau
     print "Fraction Total:" , frac_tot
-##print "Total Number of Atoms:" , N0
+    ##print "Total Number of Atoms:" , N0
 
 ##########################################
 
@@ -107,8 +107,9 @@ plt.figure()
 # (range) in the constructor.
 
 # plt.hist(energies,bins=100,range=(8,11))
+plt.hist(x,bins=300,range=(0,0.2))
 # events = plt.hist(x,bins=300,range=(0,0.2))
-lch.hist_err(x,bins=300,range=(0,0.2))
+#lch.hist_err(x,bins=300,range=(0,0.2))
 plt.xlabel('Amplitude')
 plt.ylabel('Number of Events')
 #plt.savefig('image~cal999_b200.png')
