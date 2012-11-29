@@ -61,7 +61,10 @@ def pdf(p,x,fixed_parameters): # Probability distribution function
     xhi = fixed_parameters[1]
     npts = fixed_parameters[2]
 
-    num_sig = abs(p[2]) + abs(p[5]) + abs(p[8])
+    num_sig = 0.0
+    for i in range(0,11):
+        index = i*3
+        num_sig += abs(p[2+index])
 
     num_bkg = abs(p[-1])
     tot_events = num_sig + num_bkg
@@ -104,8 +107,8 @@ def negative_log_likelihood(p, x, fixed_parameters):
 # by the detector
 first_event = 2750361.2
 # Full path to the directory 
-infile_name = '/Users/lm27apic/Documents/Fall_2012/Dark_Matter_Research/dark_matter_data/low_gain.txt'
-#infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
+#infile_name = '/Users/lm27apic/Documents/Fall_2012/Dark_Matter_Research/dark_matter_data/low_gain.txt'
+infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
 #infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/high_gain.txt'
 
 tdays,energies = cu.get_cogent_data(infile_name,first_event=first_event,calibration=999)
@@ -139,10 +142,10 @@ sigma = np.ones(len(xlo))
 nsig = np.ones(len(xlo))
 
 # Signal parameters
-for i in range(0,10):
+for i in range(0,11):
     mu[i] = (xlo[i] + xhi[i]) / 2
     sigma[i] = 0.002
-    nsig[i] = 0.3*npts
+    nsig[i] = 0.08*npts
 
 slope = 0.5
 nbkg = 0.05*npts
