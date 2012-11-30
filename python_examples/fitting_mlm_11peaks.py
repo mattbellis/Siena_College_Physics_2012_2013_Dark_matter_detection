@@ -3,6 +3,8 @@ import cogent_utilities as cu
 import matplotlib.pylab as plt
 import lichen.lichen as lch
 
+import scipy.stats as stats
+
 from scipy import optimize
 from scipy import integrate
 
@@ -45,10 +47,18 @@ def mylinear(x,m,xlo,xhi):
     return ret
 
 ################################################################################
-def mygauss(x,mu,sigma):
-    exponent = ((x-mu)**2)/(2*sigma**2)
-    a = 1.0/(sigma*np.sqrt(2*np.pi))
-    ret = a*np.exp(-exponent)
+def mygauss(x,mu,sigma,xlo,xhi):
+    #exponent = ((x-mu)**2)/(2*sigma**2)
+    #a = 1.0/(sigma*np.sqrt(2*np.pi))
+    #ret = a*np.exp(-exponent)
+
+    # Do we need this to keep track of the normalization?
+    gauss_func = stats.norm(loc=mu,scale=sigma)
+    xnorm = np.linspace(xlo,xhi,1000)
+    ynorm = gauss_func.pdf(xnorm)
+    normalization = integrate.simps(ynorm,x=xnorm)
+    ret = gauss_func.pdf(x)/normalization
+
     return ret
 
 ################################################################################
@@ -72,8 +82,8 @@ def pdf(p,x,fixed_parameters): # Probability distribution function
     ret = 0
     for i in range(0,11):
         index = i*3
-        frac_gauss =  p[2+index]/tot_events
-        ret += frac_gauss*mygauss(x,p[0+index],p[1+index]) 
+        frac_gauss = p[2+index]/tot_events
+        ret += frac_gauss*mygauss(x,p[0+index],p[1+index],xlo,xhi) 
 
     ret += (num_bkg/tot_events)*mylinear(x,p[-2],xlo,xhi)
     
@@ -83,7 +93,12 @@ def pdf(p,x,fixed_parameters): # Probability distribution function
 def negative_log_likelihood(p, x, fixed_parameters):
     # Here you need to code up the sum of all of the negative log likelihoods (pdf)
     # for each data point.
-    num_sig = abs(p[2]) + abs(p[5]) + abs(p[8])
+    num_sig = 0.0
+    for i in range(0,11):
+        index = i*3
+        num_sig += abs(p[2+index])
+
+    #num_sig = abs(p[2]) + abs(p[5]) + abs(p[8])
     num_bkg = abs(p[-1])
     tot_events = num_sig + num_bkg
     #tot_events = num_sig 
@@ -118,7 +133,7 @@ xlo = [0.170,0.1566,0.1475,0.1330,0.120,0.106,0.106,0.106,0.97,0.088,0.080,0.073
 xhi = [0.178,0.1690,0.1565,0.1470,0.124,0.116,0.116,0.116,0.104,0.95,0.087,0.080]
 
 index0 = energies>xlo[-1]
-index1 = energies<xhi[1]
+index1 = energies<xhi[0]
 index = index0*index1
 
 x = energies[index]
@@ -164,8 +179,9 @@ params_starting_vals += [mu[10],sigma[10],nsig[10]]
 
 params_starting_vals += [slope,nbkg]
 
-fixed_parameters = [xlo[-1],xhi[1],npts]
-params_final_vals = optimize.fmin(negative_log_likelihood, params_starting_vals[:],args=(x,fixed_parameters),full_output=True,maxiter=1000000,maxfun=10000)
+
+fixed_parameters = [xlo[-1],xhi[0],npts]
+params_final_vals = optimize.fmin(negative_log_likelihood, params_starting_vals[:],args=(x,fixed_parameters),full_output=True,maxiter=10000000,maxfun=100000)
 
 print params_final_vals
 print "Final values"
@@ -173,6 +189,11 @@ for i in range(0,11):
     index = i*3
     print params_final_vals[0][0+index],params_final_vals[0][1+index],params_final_vals[0][2+index]
 print params_final_vals[0][-2],params_final_vals[0][-1]
+
+for i in range(0,11):
+    index = i*3
+    m = params_final_vals[0][0+index]
+    plt.plot([m,m],[0,600])
 
 plt.show()
 
