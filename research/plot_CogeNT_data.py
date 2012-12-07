@@ -48,7 +48,7 @@ plt.ylabel('number of events')
 ##########################################
 # plotting the time for the peak
 plt.figure()
-plt.hist(t,bins=1000)
+plt.hist(t,bins=100)
 plt.xlabel('time')
 plt.ylabel('number of events')
 
@@ -107,12 +107,12 @@ plt.figure()
 # (range) in the constructor.
 
 # plt.hist(energies,bins=100,range=(8,11))
-plt.hist(x,bins=300,range=(0,0.2))
+# plt.hist(x,bins=300,range=(0,0.2))
 # events = plt.hist(x,bins=300,range=(0,0.2))
-#lch.hist_err(x,bins=300,range=(0,0.2))
+lch.hist_err(x,bins=300,range=(0,0.2))
 plt.xlabel('Amplitude')
 plt.ylabel('Number of Events')
-#plt.savefig('image~cal999_b200.png')
+plt.savefig('image~cal999_b200.png')
 
 #plt.hist(x,bins=100,range=(0,900))
 
