@@ -25,20 +25,70 @@ index = index0*index1
 
 x = energies[index]
 
+Xlo = [0.170,0.1566,0.1475,0.1330,0.120,0.106,0.106,0.106,0.97,0.088,0,0.073]
+Xhi = [0.178,0.1690,0.1565,0.1470,0.124,0.116,0.116,0.116,0.104,0.95,0,0.080]
+H_L = [80.3,270.8,270.8,244,6.075,77.233,271.74,70.86,999,312.01,27.7025,329]
+
 # This will find the mean, sum, and stddev of an array z of some peak
-index2 = energies>0.097
-index3 = energies<0.104
+
+index2 = energies>Xlo[3]
+index3 = energies<Xhi[3]
 index4 = index2*index3
 print index4
 z = energies[index4]
 t = tdays[index4]
+
 # plotting the peak
 plt.figure()
 #plt.hist(z)
 lch.hist_err(z)
+plt.xlabel('amplitude')
+plt.ylabel('number of events')
+
+##########################################
 # plotting the time for the peak
 plt.figure()
-plt.hist(t,bins=20)
+plt.hist(t,bins=100)
+plt.xlabel('time')
+plt.ylabel('number of events')
+
+for h_l in H_L:
+    tau = h_l / np.log(2)
+
+    t0 = 0
+    t1 = 68
+    #off
+    t2 = 74
+    t3 = 102
+    #off
+    t4 = 107
+    t5 = 306
+    #off
+    t6 = 308
+    t7 = 460
+    #off
+    t8 = 550
+    t9 = 910
+    
+    f1 = np.exp(-t0/tau) - np.exp(-t1/tau)
+    f2 = np.exp(-t2/tau) - np.exp(-t3/tau)
+    f3 = np.exp(-t4/tau) - np.exp(-t5/tau)
+    f4 = np.exp(-t6/tau) - np.exp(-t7/tau)
+    f5 = np.exp(-t8/tau) - np.exp(-t9/tau)
+
+    ##N1 = 
+    ##N2 = 
+    ##N3 = 
+    ##N4 =
+    ##N5 = 
+
+    frac_tot = f1 + f2 + f3 + f4 + f5
+    ##N0 = (N1 + N2 + N3 + N4) / frac_tot
+    print "Lifetime:" , tau
+    print "Fraction Total:" , frac_tot
+    ##print "Total Number of Atoms:" , N0
+
+##########################################
 
 # background = 20*len(z)
 mean = np.mean(z)
@@ -55,12 +105,14 @@ plt.figure()
 
 # Note that we can set the number of bins (bins) and the x-axis range
 # (range) in the constructor.
+
 # plt.hist(energies,bins=100,range=(8,11))
+# plt.hist(x,bins=300,range=(0,0.2))
 # events = plt.hist(x,bins=300,range=(0,0.2))
-ch.hist_err(x,bins=300,range=(0,0.2))
+lch.hist_err(x,bins=300,range=(0,0.2))
 plt.xlabel('Amplitude')
 plt.ylabel('Number of Events')
-#plt.savefig('image~cal999_b200.png')
+plt.savefig('image~cal999_b200.png')
 
 #plt.hist(x,bins=100,range=(0,900))
 
