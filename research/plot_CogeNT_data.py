@@ -99,20 +99,19 @@ print np.sum(z)
 print mean
 print stdev
 print summ
-
 # Make a figure on which to place the histogram
 plt.figure()
 
 # Note that we can set the number of bins (bins) and the x-axis range
 # (range) in the constructor.
 
-# plt.hist(energies,bins=100,range=(8,11))
+# plt.hist(energies,bins=200,range=(0,13))
 # plt.hist(x,bins=300,range=(0,0.2))
 # events = plt.hist(x,bins=300,range=(0,0.2))
 lch.hist_err(x,bins=300,range=(0,0.2))
 plt.xlabel('Amplitude')
 plt.ylabel('Number of Events')
-plt.savefig('image~cal999_b200.png')
+#plt.savefig('fulldata.png')
 
 #plt.hist(x,bins=100,range=(0,900))
 
