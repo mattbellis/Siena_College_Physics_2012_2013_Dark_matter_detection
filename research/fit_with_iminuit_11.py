@@ -14,13 +14,9 @@ from datetime import datetime,timedelta
 
 import iminuit as minuit
 
-ranges = [[8.0,13.0],[1.0,917.0]]
-#ranges = [[8.0,12.0],[1.0,459.0]]
-#ranges = [[8.0,12.0],[551.0,917.0]]
-#ranges = [[10.0,11.0],[551.0,917.0]]
-#ranges = [[10.0,11.0],[1.0,459.0]]
+ranges = [[4.0,13.0],[1.0,917.0]]
 subranges = [[],[[1,68],[75,102],[108,306],[309,459],[551,917]]]
-nbins = [300,30]
+nbins = [150,30]
 #nbins = [50,30]
 bin_widths = np.ones(len(ranges))
 for i,n,r in zip(xrange(len(nbins)),nbins,ranges):
@@ -65,7 +61,8 @@ def fitfunc(data,p,parnames,params_dict):
     numks = []
     decay_constants = []
 
-    npeaks = 4
+    npeaks = 10
+    #npeaks = 11
 
     num_tot = 0.0
     for name in parnames:
@@ -207,10 +204,12 @@ color='red',ecolor='red',markersize=2,barsabove=False,capsize=0)
 
 ############################################################################
 
-#means = [11.10,10.37,9.66,8.98]
-means = [11.11,10.4,9.70,8.91]
-sigmas = [0.08,0.08,0.08,0.08]
-num_decays_in_dataset = [100,4600,400,1400]
+means = [11.11,10.4,9.70,8.91,7.77,7.00,6.50,5.85,5.37,4.87]
+#means = [11.11,10.45,10.3,9.70,8.91,7.77,7.00,6.50,5.85,5.37,4.87]
+sigmas = [0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08]
+#sigmas = [0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08]
+num_decays_in_dataset = [100,4600,400,1400,50,200,200,200,200,200]
+#num_decays_in_dataset = [100,2600,2000,400,1400,50,200,200,200,200,200]
 
 ############################################################################
 # Declare the fit parameters
@@ -226,7 +225,7 @@ for i,val in enumerate(means):
     params_dict[name] = {'fix':True,'start_val':val}
 for i,val in enumerate(sigmas):
     name = "ks_sigma%d" % (i)
-    params_dict[name] = {'fix':False,'start_val':val,'limits':(0.001,0.15)}
+    params_dict[name] = {'fix':False,'start_val':val,'limits':(0.04,0.15)}
 for i,val in enumerate(num_decays_in_dataset):
     name = "ks_ncalc%d" % (i)
     params_dict[name] = {'fix':False,'start_val':val,'limits':(1.0,6000.0)}
@@ -301,4 +300,5 @@ ax0.plot(expts,eytot,'b',linewidth=2)
 
 
 plt.show()
+
 
