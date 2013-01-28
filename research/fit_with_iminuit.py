@@ -20,7 +20,7 @@ ranges = [[8.0,13.0],[1.0,917.0]]
 #ranges = [[10.0,11.0],[551.0,917.0]]
 #ranges = [[10.0,11.0],[1.0,459.0]]
 subranges = [[],[[1,68],[75,102],[108,306],[309,459],[551,917]]]
-nbins = [150,30]
+nbins = [300,30]
 #nbins = [50,30]
 bin_widths = np.ones(len(ranges))
 for i,n,r in zip(xrange(len(nbins)),nbins,ranges):
