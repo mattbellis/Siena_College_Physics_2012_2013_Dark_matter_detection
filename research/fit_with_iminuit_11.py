@@ -15,6 +15,10 @@ from datetime import datetime,timedelta
 import iminuit as minuit
 
 ranges = [[4.0,13.0],[1.0,917.0]]
+#ranges = [[4.0,13.0],[1.0,459.0]]
+#ranges = [[4.0,13.0],[551,917.0]]
+#ranges = [[4.0,13.0],[0,100.0]]
+
 subranges = [[],[[1,68],[75,102],[108,306],[309,459],[551,917]]]
 nbins = [150,30]
 #nbins = [50,30]
@@ -150,7 +154,7 @@ def emlf_normalized_minuit(data,p,parnames,params_dict):
 ################################################################################
 #
 # Full path to the directory 
-infile_name = '/Users/lm27apic/Documents/Fall_2012/Dark_Matter_Research/dark_matter_data/low_gain.txt'
+infile_name = '/Users/lm27apic/Documents/Dark_Matter_Research/dark_matter_data/low_gain.txt'
 #infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
 #infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/high_gain.txt'
 
@@ -204,8 +208,9 @@ color='red',ecolor='red',markersize=2,barsabove=False,capsize=0)
 
 ############################################################################
 
-means = [11.11,10.4,9.70,8.91,7.77,7.00,6.50,5.85,5.37,4.87]
-#means = [11.11,10.45,10.3,9.70,8.91,7.77,7.00,6.50,5.85,5.37,4.87]
+#means = [11.12,10.4,9.715,8.903,7.716,6.975,6.505,5.908,5.426,4.784]
+means = [11.10,10.4,9.715,8.904,7.805,6.986,6.432,5.900,5.437,4.856]
+
 sigmas = [0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08]
 #sigmas = [0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08]
 num_decays_in_dataset = [100,4600,400,1400,50,200,200,200,200,200]
@@ -222,7 +227,7 @@ params_dict['var_t'] = {'fix':True,'start_val':0,'limits':(ranges[1][0],ranges[1
 
 for i,val in enumerate(means):
     name = "ks_mean%d" % (i)
-    params_dict[name] = {'fix':True,'start_val':val}
+    params_dict[name] = {'fix':True,'start_val':val,'limits':(4.0,11.3)}
 for i,val in enumerate(sigmas):
     name = "ks_sigma%d" % (i)
     params_dict[name] = {'fix':False,'start_val':val,'limits':(0.04,0.15)}

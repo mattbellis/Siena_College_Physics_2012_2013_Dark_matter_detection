@@ -14,11 +14,11 @@ from datetime import datetime,timedelta
 
 import iminuit as minuit
 
-ranges = [[8.0,13.0],[1.0,917.0]]
-#ranges = [[8.0,12.0],[1.0,459.0]]
-#ranges = [[8.0,12.0],[551.0,917.0]]
-#ranges = [[10.0,11.0],[551.0,917.0]]
-#ranges = [[10.0,11.0],[1.0,459.0]]
+#ranges = [[8.0,13.0],[1.0,917.0]]
+#ranges = [[8.0,13.0],[1.0,459.0]]
+#ranges = [[8.0,13.0],[551.0,917.0]]
+#ranges = [[8.0,13.0],[420.0,460.0]]
+
 subranges = [[],[[1,68],[75,102],[108,306],[309,459],[551,917]]]
 nbins = [300,30]
 #nbins = [50,30]
@@ -153,8 +153,13 @@ def emlf_normalized_minuit(data,p,parnames,params_dict):
 ################################################################################
 #
 # Full path to the directory 
+<<<<<<< HEAD
 #infile_name = '/Users/lm27apic/Documents/Fall_2012/Dark_Matter_Research/dark_matter_data/low_gain.txt'
 infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
+=======
+infile_name = '/Users/lm27apic/Documents/Dark_Matter_Research/dark_matter_data/low_gain.txt'
+#infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
+>>>>>>> 2fb12908fad40ec8a333f8ad672d812643c93fb8
 #infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/high_gain.txt'
 
 tdays,energies = cu.get_cogent_data(infile_name,first_event=first_event,calibration=0)
@@ -211,7 +216,10 @@ color='red',ecolor='red',markersize=2,barsabove=False,capsize=0)
 ############################################################################
 
 #means = [11.10,10.37,9.66,8.98]
-means = [11.11,10.4,9.70,8.91]
+#means = [11.11,10.4,9.70,8.91]
+#means = [11.12,10.4,9.73,8.92]
+#means = [11.112,10.41,9.71,8.94]
+means = [11.09,10.3,9.70,8.94]
 sigmas = [0.08,0.08,0.08,0.08]
 num_decays_in_dataset = [100,4600,400,1400]
 
@@ -226,10 +234,10 @@ params_dict['var_t'] = {'fix':True,'start_val':0,'limits':(ranges[1][0],ranges[1
 
 for i,val in enumerate(means):
     name = "ks_mean%d" % (i)
-    params_dict[name] = {'fix':True,'start_val':val}
+    params_dict[name] = {'fix':False,'start_val':val,'limits':(8.0,12.0)}
 for i,val in enumerate(sigmas):
     name = "ks_sigma%d" % (i)
-    params_dict[name] = {'fix':False,'start_val':val,'limits':(0.001,0.15)}
+    params_dict[name] = {'fix':False,'start_val':val,'limits':(0.05,0.15)}
 for i,val in enumerate(num_decays_in_dataset):
     name = "ks_ncalc%d" % (i)
     params_dict[name] = {'fix':False,'start_val':val,'limits':(1.0,6000.0)}
