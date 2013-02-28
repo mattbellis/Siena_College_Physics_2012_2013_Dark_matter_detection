@@ -14,10 +14,11 @@ from datetime import datetime,timedelta
 
 import iminuit as minuit
 
-ranges = [[4.0,13.0],[1.0,917.0]]
+#ranges = [[4.0,13.0],[1.0,917.0]]
 #ranges = [[4.0,13.0],[1.0,459.0]]
 #ranges = [[4.0,13.0],[551,917.0]]
 #ranges = [[4.0,13.0],[0,100.0]]
+#ranges = [[0.0,13.0],[1.0,917.0]]
 
 subranges = [[],[[1,68],[75,102],[108,306],[309,459],[551,917]]]
 nbins = [150,30]
