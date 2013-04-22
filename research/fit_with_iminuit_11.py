@@ -14,7 +14,7 @@ from datetime import datetime,timedelta
 
 import iminuit as minuit
 
-#ranges = [[4.0,13.0],[1.0,917.0]]
+ranges = [[4.0,13.0],[1.0,917.0]]
 #ranges = [[4.0,13.0],[1.0,459.0]]
 #ranges = [[4.0,13.0],[551,917.0]]
 #ranges = [[4.0,13.0],[0,100.0]]
@@ -228,7 +228,7 @@ params_dict['var_t'] = {'fix':True,'start_val':0,'limits':(ranges[1][0],ranges[1
 
 for i,val in enumerate(means):
     name = "ks_mean%d" % (i)
-    params_dict[name] = {'fix':True,'start_val':val,'limits':(4.0,11.3)}
+    params_dict[name] = {'fix':False,'start_val':val,'limits':(4.0,11.3)}
 for i,val in enumerate(sigmas):
     name = "ks_sigma%d" % (i)
     params_dict[name] = {'fix':False,'start_val':val,'limits':(0.04,0.15)}
