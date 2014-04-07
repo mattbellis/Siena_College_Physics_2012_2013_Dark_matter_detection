@@ -14,14 +14,17 @@ from datetime import datetime,timedelta
 
 import iminuit as minuit
 
-ranges = [[4.0,13.0],[1.0,917.0]]
+# For plotting
+ranges = [[0.5,12.0],[1.0,917.0]]
+# For fitting
+#ranges = [[4.0,13.0],[1.0,917.0]]
 #ranges = [[4.0,13.0],[1.0,459.0]]
 #ranges = [[4.0,13.0],[551,917.0]]
 #ranges = [[4.0,13.0],[0,100.0]]
 #ranges = [[0.0,13.0],[1.0,917.0]]
 
 subranges = [[],[[1,68],[75,102],[108,306],[309,459],[551,917]]]
-nbins = [150,30]
+nbins = [300,30]
 #nbins = [50,30]
 bin_widths = np.ones(len(ranges))
 for i,n,r in zip(xrange(len(nbins)),nbins,ranges):
@@ -155,12 +158,16 @@ def emlf_normalized_minuit(data,p,parnames,params_dict):
 ################################################################################
 #
 # Full path to the directory 
-infile_name = '/Users/lm27apic/Documents/Dark_Matter_Research/dark_matter_data/low_gain.txt'
+#infile_name = '/Users/lm27apic/Documents/Dark_Matter_Research/dark_matter_data/low_gain.txt'
 #infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
+infile_name = '/home/bellis/matts-work-environment/python/CoGeNT/data/HE.txt'
 #infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/high_gain.txt'
 
 tdays,energies = cu.get_cogent_data(infile_name,first_event=first_event,calibration=0)
 data = [energies.copy(),tdays.copy()]
+
+print tdays
+print energies
 
 # Cut events out that fall outside the range.
 data = cut_events_outside_range(data,ranges)
@@ -171,6 +178,32 @@ nevents = float(len(data[0]))
 ############################################################################
 # Plot the data
 ############################################################################
+#### THIS PART IS FOR TALKS
+fig1 = plt.figure(figsize=(10,4),dpi=100)
+ax11 = fig1.add_subplot(1,1,1)
+fig1.subplots_adjust(left=0.08,right=0.95,bottom=0.15,top=0.95)
+
+ax11.set_xlim(ranges[0])
+#ax11.set_ylim(0.0,50.0)
+#ax11.set_ylim(0.0,92.0)
+ax11.set_xlabel("Ionization Energy (keVee)",fontsize=12)
+ax11.set_ylabel("Events",fontsize=12)
+
+lch.hist_err(data[0],bins=nbins[0],range=ranges[0],axes=ax11)
+
+plt.savefig('cogent_full_range_0.png')
+
+ax11.annotate(r'K-shell decays', xy=(9.5,350), xytext=(6,500), arrowprops=dict(facecolor='black', shrink=0.05),color='red',fontsize=24)
+ax11.annotate(r'L-shell decays', xy=(1.5,300), xytext=(2,650), arrowprops=dict(facecolor='black', shrink=0.05),color='red',fontsize=24)
+plt.savefig('cogent_full_range_1.png')
+ax11.annotate(r'Low-mass WIMPs', xy=(2.0,200), xytext=(4,350), arrowprops=dict(facecolor='black', shrink=0.05),color='black',fontsize=24)
+plt.savefig('cogent_full_range_2.png')
+
+
+plt.show()
+exit()
+
+
 fig0 = plt.figure(figsize=(12,4),dpi=100)
 ax0 = fig0.add_subplot(1,2,1)
 ax1 = fig0.add_subplot(1,2,2)
@@ -228,10 +261,10 @@ params_dict['var_t'] = {'fix':True,'start_val':0,'limits':(ranges[1][0],ranges[1
 
 for i,val in enumerate(means):
     name = "ks_mean%d" % (i)
-    params_dict[name] = {'fix':False,'start_val':val,'limits':(4.0,11.3)}
+    params_dict[name] = {'fix':True,'start_val':val,'limits':(4.0,11.3)}
 for i,val in enumerate(sigmas):
     name = "ks_sigma%d" % (i)
-    params_dict[name] = {'fix':False,'start_val':val,'limits':(0.04,0.15)}
+    params_dict[name] = {'fix':True,'start_val':val,'limits':(0.04,0.15)}
 for i,val in enumerate(num_decays_in_dataset):
     name = "ks_ncalc%d" % (i)
     params_dict[name] = {'fix':False,'start_val':val,'limits':(1.0,6000.0)}
@@ -245,10 +278,12 @@ params_names,kwd = fitutils.dict2kwd(params_dict)
 
 f = fitutils.Minuit_FCN([data],params_dict,emlf_normalized_minuit)
 
+kwd['errordef'] = 0.5
+
 m = minuit.Minuit(f,**kwd)
 
 # For maximum likelihood method.
-m.up = 0.5
+#m.up = 0.5
 
 # Up the tolerance.
 m.tol = 1.0

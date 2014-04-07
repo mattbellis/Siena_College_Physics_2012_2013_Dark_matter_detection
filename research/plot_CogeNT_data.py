@@ -9,14 +9,18 @@ first_event = 2750361.2
 
 # We need to give the full path to the directory. This will obviously be 
 # different on your machine, so you will want to edit this by hand. 
-infile_name = '/Users/lm27apic/Documents/Dark_Matter_Research/dark_matter_data/low_gain.txt'
-#infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
+#infile_name = '/Users/lm27apic/Documents/Dark_Matter_Research/dark_matter_data/low_gain.txt'
+infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
 #infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/high_gain.txt'
 
-tdays,energies = cu.get_cogent_data(infile_name,first_event=first_event,calibration=999)
+#tdays,energies = cu.get_cogent_data(infile_name,first_event=first_event,calibration=999)
+tdays,energies = cu.get_cogent_data(infile_name,first_event=first_event,calibration=1)
 
-index0 = energies>0
-index1 = energies<0.2
+#index0 = energies>0
+#index1 = energies<0.2
+
+index0 = energies>0.5
+index1 = energies<15.0
 
 print len(energies)
 print len(index0)
@@ -31,18 +35,22 @@ H_L = [80.3,270.8,270.8,244,6.075,77.233,271.74,70.86,999,312.01,27.7025,329]
 
 # This will find the mean, sum, and stddev of an array z of some peak
 
-index2 = energies>Xlo[3]
-index3 = energies<Xhi[3]
+#index2 = energies>Xlo[3]
+#index3 = energies<Xhi[3]
+#index4 = index2*index3
+index2 = energies>0.0
+index3 = energies<15.0
 index4 = index2*index3
 print index4
 z = energies[index4]
 t = tdays[index4]
 
 # plotting the peak
-plt.figure()
+plt.figure(figsize=(8,6))
 #plt.hist(z)
 lch.hist_err(z)
-plt.xlabel('amplitude')
+#plt.xlabel('amplitude')
+plt.xlabel('Energy (keVee)')
 plt.ylabel('number of events')
 
 ##########################################
@@ -100,7 +108,7 @@ print mean
 print stdev
 print summ
 # Make a figure on which to place the histogram
-plt.figure()
+plt.figure(figsize=(10,5))
 
 # Note that we can set the number of bins (bins) and the x-axis range
 # (range) in the constructor.
@@ -108,9 +116,12 @@ plt.figure()
 # plt.hist(energies,bins=200,range=(0,13))
 # plt.hist(x,bins=300,range=(0,0.2))
 # events = plt.hist(x,bins=300,range=(0,0.2))
-lch.hist_err(x,bins=300,range=(0,0.2))
-plt.xlabel('Amplitude')
+lch.hist_err(x,bins=300,range=(0.5,13.0))
+plt.xlabel('Energy (keVee)')
 plt.ylabel('Number of Events')
+plt.xlim(0.5,13)
+plt.ylim(5.0)
+plt.yscale('log')
 #plt.savefig('fulldata.png')
 
 #plt.hist(x,bins=100,range=(0,900))

@@ -122,8 +122,8 @@ def negative_log_likelihood(p, x, fixed_parameters):
 # by the detector
 first_event = 2750361.2
 # Full path to the directory 
-infile_name = '/Users/lm27apic/Documents/Dark_Matter_Research/dark_matter_data/low_gain.txt'
-#infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
+#infile_name = '/Users/lm27apic/Documents/Dark_Matter_Research/dark_matter_data/low_gain.txt'
+infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/low_gain.txt'
 #infile_name = '/home/bellis/matts-work-environment/PyROOT/CoGeNT/data/high_gain.txt'
 
 tdays,energies = cu.get_cogent_data(infile_name,first_event=first_event,calibration=999)
@@ -137,6 +137,8 @@ index1 = energies<xhi[0]
 index = index0*index1
 
 x = energies[index]
+
+print x
 
 plt.figure()
 lch.hist_err(x,bins=200)

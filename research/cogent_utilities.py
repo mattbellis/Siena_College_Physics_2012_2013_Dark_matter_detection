@@ -49,19 +49,26 @@ def get_cogent_data(infile_name,first_event=0.0,calibration=0):
     infile = open(infile_name)
     content = np.array(infile.read().split()).astype('float')
 
-    ndata = len(content)/2
+    #ndata = len(content)/2
+    # New data
+    ndata = len(content)/3
 
     # Get time
-    index = np.arange(0,ndata*2,2)
+    #index = np.arange(0,ndata*2,2)
+    index = np.arange(0,ndata*3,3)
 
     tseconds = content[index]
     tdays = (tseconds-first_event)/(24.0*3600.0) + 1.0
 
     # Get energy
-    index = np.arange(1,ndata*2+1,2)
+    #index = np.arange(1,ndata*2+1,2)
+    index = np.arange(1,ndata*3+1,3)
 
-    amplitudes = content[index]
-    energies = amp_to_energy(amplitudes,calibration)
+    #amplitudes = content[index]
+    #energies = amp_to_energy(amplitudes,calibration)
+
+    # new stuff
+    energies = content[index]
 
     return tdays,energies
 
